@@ -85,37 +85,50 @@
             populateList(items, itemsList);
         }
 
+
         function removeItem() {
-            //1.選擇所有被checked的input
-            const getChecked = document.querySelectorAll('input[checked]');
-            //console.log(getChecked);
-
-            //2.透過getChecked[i].dataset.index，把它從items裡刪掉
-            for (var i = 0; i < getChecked.length; i++) {
-                let removeItemIndex = getChecked[i].dataset.index;
-                delete items[i];
-                //console.log(items);
-            }
-
-            //3.把沒被刪除的重新丟到一個新陣列裡
-            let newItems = [];
-            for (var i = 0; i < items.length; i++) {
-                if (items[i] != undefined) {//在items裡，被刪掉的是undefined
-                    newItems.push(items[i]);
-                }
-            }
-            //4. items放入整理好的，沒checked的資料
-            items = newItems;
-            //console.log(items);
-
-            //5.顯示在畫面上
-            populateList(items, itemsList);
-
-            //6.存入localStorage
+            items = items.filter(item => {
+                return item.done === false;
+            });
+            console.log(items);
             localStorage.setItem('items', JSON.stringify(items));
-
-
+            console.log(localStorage.items);
+            console.log(itemsList);
+            populateList(items, itemsList);
         }
+
+
+        // function removeItem() {
+        //     //1.選擇所有被checked的input
+        //     const getChecked = document.querySelectorAll('input[checked]');
+        //     console.log(getChecked);
+
+        //     //2.透過getChecked[i].dataset.index，把它從items裡刪掉
+        //     for (var i = 0; i < getChecked.length; i++) {
+        //         let removeItemIndex = getChecked[i].dataset.index;
+        //         delete items[i];
+        //         //console.log(items);
+        //     }
+
+        //     //3.把沒被刪除的重新丟到一個新陣列裡
+        //     let newItems = [];
+        //     for (var i = 0; i < items.length; i++) {
+        //         if (items[i] != undefined) {//在items裡，被刪掉的是undefined
+        //             newItems.push(items[i]);
+        //         }
+        //     }
+        //     //4. items放入整理好的，沒checked的資料
+        //     items = newItems;
+        //     //console.log(items);
+
+        //     //5.顯示在畫面上
+        //     populateList(items, itemsList);
+
+        //     //6.存入localStorage
+        //     localStorage.setItem('items', JSON.stringify(items));
+
+
+        // }
 
 
         addItems.addEventListener('submit', addItem);
