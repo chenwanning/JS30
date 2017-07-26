@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mouse Shadow</title>
+</head>
+
+<body>
+
+    <div class="hero">
+        <h1 contenteditable>🔥WOAH!</h1>
+    </div>
+
+    <style>
+        html {
+            color: black;
+            font-family: sans-serif;
+        }
+        
+        body {
+            margin: 0;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: black;
+        }
+        
+        h1 {
+            text-shadow: 10px 10px 0 rgba(0, 0, 0, 1);
+            font-size: 100px;
+        }
+    </style>
+
+    <script>
+        const hero = document.querySelector('.hero');
+        const text = hero.querySelector('h1');
+        const walk = 500; // 100px
+        function shadow(e) {
+
+            //the viewable width of an element(hero) in pixels,including padding, border and scrollbar,but not the margin
+            const { offsetWidth: width, offsetHeight: height } = hero;
+            //console.log(width);//1360
+            // console.log(height);//662
+
+            //offsetLeft:the left position(in pixels) relative to the left side the offsetParent element(hero)
+            //知道使用者的滑鼠在哪裡
+            let { offsetX: x, offsetY: y } = e;
+
+
+            //console.log(e.target);//<div class="hero"></div>或<h1 contenteditable>🔥WOAH!</h1>
+
+
+            if (this !== e.target) {
+                //console.log(this);//<div class="hero"></div>
+                // console.log(e.target);//<h1 contenteditable>🔥WOAH!</h1>
+                console.log(x);
+                console.log(y);
+                x = x + e.target.offsetLeft;
+                y = y + e.target.offsetTop;
+                console.log(x);
+                console.log(y);
+            }
+            // console.log(x);//愈往左愈大0~1400
+            // console.log(y);//愈往下愈大0~6百多
+
+
+            //滑鼠移動x為0~1400,想把它變成負整數到正整數的區間範圍，製作影子
+            //x是滑鼠移動多少(0~1400)，除以width:1360(the viewable width of an element hero),乘500(自訂)=0~500。再減250為-250~+250
+            const xWalk = Math.round((x / width * walk) - (walk / 2));
+            const yWalk = Math.round((y / height * walk) - (walk / 2));
+
+            // console.log(xWalk);//-250~+250(左到右)
+            // console.log(yWalk);//-250~+250(上到下)
+
+            text.style.textShadow = `
+              ${xWalk}px ${yWalk}px 0 rgba(255,0,255,0.7),
+              ${xWalk * -1}px ${yWalk}px 0 rgba(0,255,255,0.7),
+              ${yWalk}px ${xWalk * -1}px 0 rgba(0,255,0,0.7),
+              ${yWalk * -1}px ${xWalk}px 0 rgba(0,0,255,0.7)
+            `;
+        }
+
+
+        hero.addEventListener('mousemove', shadow);
+    </script>
+</body>
+
+</html>
